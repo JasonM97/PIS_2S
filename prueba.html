@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interactivo con Fondo de Naturaleza</title>
+    <!-- Enlaza el archivo CSS de Leaflet para los estilos del mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Enlaza el archivo CSS de jQuery UI para los estilos de los controles -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        /* Estilo de la página con fondo de naturaleza */
+        body {
+           /* background-image: url('https://example.com/nature-background.jpg');  URL de la imagen de fondo */
+            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+            background-attachment: fixed; /* Mantiene el fondo fijo al hacer scroll */
+            background-position: center; /* Centra la imagen de fondo */
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        /* Estilos para el contenedor del mapa */
+        #map-container {
+            display: flex;
+            justify-content: center; /* Centra el mapa horizontalmente */
+            align-items: center; /* Centra el mapa verticalmente */
+            height: 80vh; /* Altura del contenedor del mapa */
+            margin: 20px auto; /* Espaciado alrededor del contenedor del mapa */
+        }
+        /* Estilos para el mapa */
+        #map { 
+            height: 100%; 
+            width: 100%; 
+            border: 3px solid #007bff; /* Borde alrededor del mapa */
+            border-radius: 10px; /* Bordes redondeados del mapa */
+        }
+        /* Estilos para los controles */
+        #controls { 
+            text-align: center; /* Centra los controles */
+            margin: 20px 0; /* Espaciado vertical */
+        }
+        button, select {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0c5724;
+            color: #ffffff;
+        }
+        button:hover, select:hover {
+            background-color: #0056b3;
+        }
+        /* Estilo del ícono de marcador personalizado */
+        .leaflet-div-icon {
+            background-color: #ffffff;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            text-align: center;
+            font-size: 16px;
+            color: #007bff;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            font-weight: bold;
+        }
+
+        .contenedor{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo{
+            width: 175px;
+            height: 60px;
+            margin-left: 30px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+    
+ 
+    <!-- Contenedor para los botones de control y selección de rutas -->
+     <div class="contenedor">
+        <img src="logo.png" alt="" class="logo">
+         <div id="controls">
+             <!-- Botón para eliminar todos los marcadores -->
+             <button id="clearMarkers">Eliminar Marcadores</button>
+             <!-- Botón para dibujar una ruta entre los marcadores -->
+             <button id="drawRoute">Dibujar Ruta</button>
+             <!-- Botón para guardar la ruta actual -->
+             <button id="saveRoute">Guardar Ruta</button>
+             <!-- Botón para eliminar la ruta actual -->
+             <button id="removeRoute">Eliminar Ruta</button>
+             <!-- Selector para elegir rutas almacenadas -->
+             <select id="routeSelect">
+                 <option value="">Seleccionar Ruta</option>
+             </select>
+         </div>
+     </div>
+
+
+    <!-- Contenedor para el mapa -->
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+
+    <!-- Enlaza jQuery y jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Coordenadas iniciales del Jardín Botánico de Quito
+            var jardinBotanico = [-0.1863, -78.4851];
+
+            // Crear el mapa y establecer la vista en el Jardín Botánico con un nivel de zoom alto
+            var map = L.map('map').setView(jardinBotanico, 30);
+
+            // Añadir la capa de tiles del mapa de OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'TECNO ECUATORIANO'
+            }).addTo(map);
+
+            // Crear un grupo de marcadores para gestionarlos fácilmente
+            var markers = L.layerGroup().addTo(map);
+            // Array para almacenar las coordenadas de los marcadores
+            var markerCoordinates = [];
+            // Array para almacenar las rutas guardadas
+            var savedRoutes = [];
+            // Variable para almacenar la línea de la ruta actual
+            var currentRouteLine;
+            // Variable para almacenar el nombre de la ruta actual
+            var currentRouteName = '';
+
+            
+            
+            //MARCADORES DE LOS SITIOS DENTRO DEL JARDIN BOTANICO
+
+            //Marcador del sitio
+
+            //Jardin Botanoico
+            L.marker([-0.186175, -78.485112]).addTo(map)
+            .bindPopup("JARDIN BOTANICO QUITO")
+            .openPopup();
+            
+            // --------------------------------------------       ICONO PARA LAS PLANTAS
+            var customIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/6873/6873284.png', // URL de tu imagen personalizada
+            iconSize: [30, 30], // tamaño del icono
+            iconAnchor: [10, 30], // punto del icono que corresponderá a la posición del marcador
+            popupAnchor: [0, -25], // punto desde el cual se abrirá el popup relativo al icono
+             });
+
+            //Location Plantas: Carnivoras
+            L.marker([-0.1862, -78.48647],{icon: customIcon}).addTo(map)
+            .bindPopup("<b>CARNIVORAS</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            
+
+            //Location Plantas: Bromelia
+            L.marker([-0.1866, -78.48502],{icon: customIcon}).addTo(map)
+            .bindPopup("<b>BROMELIAS</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            
+
+
+            //Location Plantas: Orquideas 
+            L.marker([-0.1868, -78.48603],{icon: customIcon}).addTo(map)
+            .bindPopup("<b>ORQUIDEAS</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+
+
+            //Location Plantas: Orquideas Exterior
+            L.marker([-0.1860, -78.48628],{icon: customIcon}).addTo(map)
+            .bindPopup("<b>ORQUIDEAS EXTERIOR</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            
+
+            //Location Plantas: Japonesas
+            L.marker([-0.1860, -78.48473],{icon: customIcon}).addTo(map)
+            .bindPopup("<b>JARDIN JAPONES</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            
+
+
+            
+            // ---------------------------     ICONO PARA Los ARBOLES
+            var customIconA = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/736/736859.png', // URL de tu imagen personalizada
+            iconSize: [30, 30], // tamaño del icono
+            iconAnchor: [0, 40], // punto del icono que corresponderá a la posición del marcador
+            popupAnchor: [0, -30], // punto desde el cual se abrirá el popup relativo al icono
+             });
+
+            //Location de arboles: Bonsais
+            L.marker([-0.1864, -78.48482],{icon: customIconA}).addTo(map)
+            .bindPopup("<b>BONSAIS</b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>")
+            
+
+            //Location de arboles: Harbustos de Paramo
+            L.marker([ -0.1863, -78.48608],{icon: customIconA}).addTo(map)
+            .bindPopup("<b>HARBUSTOS DE PARAMO </b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>")
+            
+
+
+
+
+
+
+            // -----------------------       ICONO PARA LOS CACTUS
+            var customIconC = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3239/3239263.png', // URL de tu imagen personalizada
+            iconSize: [30, 30], // tamaño del icono
+            iconAnchor: [0, 40], // punto del icono que corresponderá a la posición del marcador
+            popupAnchor: [0, -30], // punto desde el cual se abrirá el popup relativo al icono
+             });
+
+            //Location de arboles: Cactus
+            L.marker([-0.1866, -78.48593],{icon: customIconC}).addTo(map)
+            .bindPopup("<b>CACTUS</b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>")
+            
+
+
+           
+            //-----------------------          ICONO PARA PLANTAS ANDINAS
+            var customIconAD = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/2917/2917734.png', // URL de tu imagen personalizada
+            iconSize: [30, 30], // tamaño del icono
+            iconAnchor: [20, 20], // punto del icono que corresponderá a la posición del marcador
+            popupAnchor: [0, -20], // punto desde el cual se abrirá el popup relativo al icono
+             });
+
+            //Location plnatas andinas: Naranjilla , Aji
+            L.marker([-0.1858, -78.48603],{icon: customIconAD}).addTo(map)
+            .bindPopup("<b>PLANTAS ANDINAS</b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>");
+
+
+
+
+
+            // Función para generar un color aleatorio en formato hexadecimal
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            // Función para añadir un marcador con las iniciales "JB"
+            function addMarker(latlng) {
+                var icon = L.divIcon({
+                    className: 'leaflet-div-icon',
+                    html: 'JB'
+                });
+
+                L.marker(latlng, { icon: icon }).addTo(markers)
+                    .bindPopup('Coordenadas: ' + latlng.lat.toFixed(4) + ', ' + latlng.lng.toFixed(5))
+                    .openPopup();
+
+                markerCoordinates.push(latlng);
+            }
+
+            // Función para manejar el evento de clic en el mapa
+            function onMapClick(e) {
+                addMarker(e.latlng);
+            }
+
+            // Añadir el evento de clic en el mapa para llamar a la función onMapClick
+            map.on('click', onMapClick);
+
+            // Función para eliminar todos los marcadores del mapa
+            function clearMarkers() {
+                markers.clearLayers();
+                markerCoordinates = [];
+                if (currentRouteLine) {
+                    map.removeLayer(currentRouteLine); // Eliminar la línea de la ruta actual si existe
+                }
+                // Notificar al usuario que los marcadores han sido eliminados
+                alert('Todos los marcadores han sido eliminados.');
+            }
+
+            // Función para dibujar una ruta entre los marcadores almacenados
+            function drawRoute() {
+                if (markerCoordinates.length > 1) {
+                    if (currentRouteLine) {
+                        map.removeLayer(currentRouteLine); // Eliminar la línea de la ruta anterior si existe
+                    }
+                    
+                    // Crear una polilínea con los marcadores y un color aleatorio
+                    var routeColor = getRandomColor();
+                    currentRouteLine = L.polyline(markerCoordinates, { color: routeColor, weight: 4 }).addTo(map);
+
+                    // Ajustar el mapa para mostrar toda la ruta
+                    map.fitBounds(currentRouteLine.getBounds());
+                } else {
+                    // Notificar al usuario si no hay suficientes marcadores
+                    alert('Añade al menos dos marcadores para dibujar una ruta.');
+                }
+            }
+
+            // Función para guardar la ruta actual en el array de rutas guardadas
+            function saveRoute() {
+                if (markerCoordinates.length > 1) {
+                    var routeName = prompt('Introduce el nombre de la ruta:');
+                    if (routeName) {
+                        savedRoutes.push({
+                            name: routeName,
+                            coordinates: markerCoordinates.slice(), // Hacer una copia de las coordenadas
+                            color: getRandomColor() // Asignar un color aleatorio a la ruta
+                        });
+                        updateRouteSelect(); // Actualizar el selector de rutas
+                        // Notificar al usuario que la ruta ha sido guardada
+                        alert('Ruta guardada con éxito.');
+                    }
+                } else {
+                    // Notificar al usuario si no hay suficientes marcadores
+                    alert('Añade al menos dos marcadores para guardar una ruta.');
+                }
+            }
+
+            // Función para actualizar el selector de rutas con las rutas guardadas
+            function updateRouteSelect() {
+                var routeSelect = $('#routeSelect');
+                routeSelect.empty().append('<option value="">Seleccionar Ruta</option>'); // Limpiar el selector
+                savedRoutes.forEach(function(route, index) {
+                    var option = $('<option>').val(index).text(route.name);
+                    routeSelect.append(option);
+                });
+            }
+
+            // Función para mostrar una ruta guardada en el mapa
+            function showSavedRoute() {
+                var selectedIndex = $('#routeSelect').val();
+                if (selectedIndex !== '') {
+                    var route = savedRoutes[selectedIndex];
+                    if (route) {
+                        if (currentRouteLine) {
+                            map.removeLayer(currentRouteLine); // Eliminar la línea de la ruta actual si existe
+                        }
+                        // Crear una polilínea con los marcadores de la ruta guardada y el color asignado
+                        currentRouteLine = L.polyline(route.coordinates, { color: route.color, weight: 4 }).addTo(map);
+                        map.fitBounds(currentRouteLine.getBounds());
+                    }
+                }
+            }
+
+            // Función para eliminar la ruta actual
+            function removeRoute() {
+                if (currentRouteLine) {
+                    map.removeLayer(currentRouteLine); // Eliminar la línea de la ruta actual
+                    currentRouteLine = null;
+                    markerCoordinates = []; // Limpiar las coordenadas de la ruta actual
+                    $('#routeSelect').val(''); // Limpiar la selección de rutas
+                    // Notificar al usuario que la ruta ha sido eliminada
+                    alert('Ruta eliminada.');
+                }
+            }
+
+            // Asignar la función de eliminación de marcadores al botón usando jQuery
+            $('#clearMarkers').on('click', clearMarkers);
+
+            // Asignar la función de dibujar ruta al botón usando jQuery
+            $('#drawRoute').on('click', drawRoute);
+
+            // Asignar la función de guardar ruta al botón usando jQuery
+            $('#saveRoute').on('click', saveRoute);
+
+            // Asignar la función de mostrar ruta guardada al selector de rutas usando jQuery
+            $('#routeSelect').on('change', showSavedRoute);
+
+            // Asignar la función de eliminar ruta al botón usando jQuery
+            $('#removeRoute').on('click', removeRoute);
+
+            // Controles de zoom en la esquina superior derecha del mapa
+            L.control.zoom({
+                position: 'topright'
+            }).addTo(map);
+        });
+    </script>
+
+</body>
+</html>
