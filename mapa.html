@@ -9,7 +9,17 @@
         img {
             max-width: 100%;
             height: auto;
+            
         }
+        .imgLog {
+            max-width: 100%;
+            height: auto;
+            transform: rotate(360deg);
+        }
+
+
+
+
         /* Estilo para el marcador de coordenadas */
         .marker {
             position: absolute;
@@ -22,19 +32,45 @@
     </style>
 </head>
 <body>
+
+  <!-- Contenedor para los botones de control y selección de rutas -->
+  <div class="contenedor">
+    <img src="logo.png" alt="" class="imgLog">
+     <div id="controls">
+         <!-- Botón para eliminar todos los marcadores -->
+         <button id="clearMarkers">Eliminar Marcadores</button>
+         <!-- Botón para dibujar una ruta entre los marcadores -->
+         <button id="drawRoute">Dibujar Ruta</button>
+         <!-- Botón para guardar la ruta actual -->
+         <button id="saveRoute">Guardar Ruta</button>
+         <!-- Botón para eliminar la ruta actual -->
+         <button id="removeRoute">Eliminar Ruta</button>
+         <!-- Selector para elegir rutas almacenadas -->
+         <select id="routeSelect">
+             <option value="">Seleccionar Ruta</option>
+         </select>
+     </div>
+ </div>
+
     <div style="position: relative;">
         <!-- Imagen en la que se marcarán las coordenadas -->
-        <img src="tu_imagen.jpg" id="image" alt="Imagen" onclick="markCoordinates(event)">
+        <img src="mapa_jardin_botanico.png" id="imag" alt="Imagen" onclick="markCoordinates(event)"> 
         <!-- Contenedor para mostrar las coordenadas -->
         <div id="marker-container"></div>
     </div>
 
-    <script>
+    <p>Coordenadas: <span id="coordenadas"></span></p>
+   
+   <script>
+        left
+
         // Función para marcar las coordenadas
         function markCoordinates(event) {
+
             // Obtener la posición del clic dentro de la imagen
             const x = event.offsetX;
-            const y = event.offsetY;
+           const y = event.offsetY;
+
 
             // Crear un marcador visual en las coordenadas clicadas
             const marker = document.createElement("div");
@@ -44,11 +80,31 @@
 
             // Mostrar el marcador en el contenedor
             const markerContainer = document.getElementById("marker-container");
-            markerContainer.appendChild(marker);
+            markerContainer.appendChild(marker); 
 
-            // Mostrar las coordenadas en la consola
-            console.log("Coordenadas: X=" + x + ", Y=" + y);
         }
+
+
+
+
+        // Función para dibujar una ruta entre los marcadores almacenados
+            function drawRoute() {
+                if (markerContainer .length > 1) {
+                    if (currentRouteLine) {
+                        map.removeLayer(currentRouteLine); // Eliminar la línea de la ruta anterior si existe
+                    }
+                    
+                    // Crear una polilínea con los marcadores y un color aleatorio
+                    var routeColor = getRandomColor();
+                    currentRouteLine = L.polyline(markerCoordinates, { color: routeColor, weight: 4 }).addTo(map);
+
+                    // Ajustar el mapa para mostrar toda la ruta
+                    map.fitBounds(currentRouteLine.getBounds());
+                } else {
+                    // Notificar al usuario si no hay suficientes marcadores
+                    alert('Añade al menos dos marcadores para dibujar una ruta.');
+                }
+            }
     </script>
 </body>
 </html>
