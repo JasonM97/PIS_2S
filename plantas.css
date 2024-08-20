@@ -113,19 +113,23 @@ footer img{
     align-items: center;
 }
 .redesSociales .icono{
-    width: 50px;
+    width: 35px;
     height: 50px;
     object-fit: contain;
 }
 
-.redesSociales img:hover{
-    transform: scale(1.2);
+.redesSociales img {
+    transition: transform 0.3s ease;
+}
+
+.redesSociales img:hover {
+    transform: rotate(15deg) scale(1.05);
 }
 
 .mapaInteractivo{
     width: 100%;
     font-family: 'Courier New', Courier, monospace;
-    background-color: bisque;
+    background-color: rgb(255, 255, 255);
     border-radius: 20px;
     font-size: 25px;
 }
