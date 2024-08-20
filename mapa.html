@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcar Coordenadas en Imagen</title>
+    <style>
+        /* Estilos para la imagen */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        /* Estilo para el marcador de coordenadas */
+        .marker {
+            position: absolute;
+            background-color: red;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div style="position: relative;">
+        <!-- Imagen en la que se marcarán las coordenadas -->
+        <img src="tu_imagen.jpg" id="image" alt="Imagen" onclick="markCoordinates(event)">
+        <!-- Contenedor para mostrar las coordenadas -->
+        <div id="marker-container"></div>
+    </div>
+
+    <script>
+        // Función para marcar las coordenadas
+        function markCoordinates(event) {
+            // Obtener la posición del clic dentro de la imagen
+            const x = event.offsetX;
+            const y = event.offsetY;
+
+            // Crear un marcador visual en las coordenadas clicadas
+            const marker = document.createElement("div");
+            marker.className = "marker";
+            marker.style.left = x + "px";
+            marker.style.top = y + "px";
+
+            // Mostrar el marcador en el contenedor
+            const markerContainer = document.getElementById("marker-container");
+            markerContainer.appendChild(marker);
+
+            // Mostrar las coordenadas en la consola
+            console.log("Coordenadas: X=" + x + ", Y=" + y);
+        }
+    </script>
+</body>
+</html>
