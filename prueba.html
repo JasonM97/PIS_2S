@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Interactivo con Fondo de Naturaleza</title>
+    <title>Mapa Interactivo</title>
     <!-- Enlaza el archivo CSS de Leaflet para los estilos del mapa -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- Enlaza el archivo CSS de jQuery UI para los estilos de los controles -->
@@ -11,12 +11,15 @@
     <style>
         /* Estilo de la página con fondo de naturaleza */
         body {
-           /* background-image: url('https://example.com/nature-background.jpg');  URL de la imagen de fondo */
-            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-            background-attachment: fixed; /* Mantiene el fondo fijo al hacer scroll */
-            background-position: center; /* Centra la imagen de fondo */
-            margin: 0;
-            font-family: Arial, sans-serif;
+            background: linear-gradient(
+                    rgba(0, 0, 0, 0.5),
+                    rgba(0, 0, 0, 0.5)),
+                    url(inicio/imagenes/img3.jpg);  /*URL de la imagen de fondo */
+                    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+                    background-attachment: fixed; /* Mantiene el fondo fijo al hacer scroll */
+                    background-position: center; /* Centra la imagen de fondo */
+                    margin: 0;
+                    font-family: Arial, sans-serif;
         }
         /* Estilos para el contenedor del mapa */
         #map-container {
@@ -39,14 +42,13 @@
             margin: 20px 0; /* Espaciado vertical */
         }
         button, select {
+            display: inline-block;
             padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #0c5724;
-            color: #ffffff;
+            background-color: #00763c;
+            border-radius: 10px;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            margin-top: 25px;
         }
         button:hover, select:hover {
             background-color: #0056b3;
@@ -72,9 +74,10 @@
             
         }
         .logo{
-            width: 175px;
-            height: 60px;
-            margin-left: 30px;
+            width: 180px;
+            height: 75px;
+            margin-left: 120px;
+            margin-top: 40px;
         }
 
     </style>
@@ -86,7 +89,9 @@
  
     <!-- Contenedor para los botones de control y selección de rutas -->
      <div class="contenedor">
-        <img src="logo.png" alt="" class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="" class="logo">
+        </a>
          <div id="controls">
              <!-- Botón para eliminar todos los marcadores -->
              <button id="clearMarkers">Eliminar Marcadores</button>
@@ -165,23 +170,23 @@
 
             //Location Plantas: Bromelia
             L.marker([-0.1866, -78.48502],{icon: customIcon}).addTo(map)
-            .bindPopup("<b>BROMELIAS</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            .bindPopup("<b>BROMELIAS</b><br><a href='plantas9.html' target='_blank'>informacion</a>")
             
 
 
             //Location Plantas: Orquideas 
             L.marker([-0.1868, -78.48603],{icon: customIcon}).addTo(map)
-            .bindPopup("<b>ORQUIDEAS</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            .bindPopup("<b>ORQUIDEAS</b><br><a href='plantas6.html' target='_blank'>informacion</a>")
 
 
             //Location Plantas: Orquideas Exterior
             L.marker([-0.1860, -78.48628],{icon: customIcon}).addTo(map)
-            .bindPopup("<b>ORQUIDEAS EXTERIOR</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            .bindPopup("<b>ORQUIDEAS EXTERIOR</b><br><a href='planta3.html' target='_blank'>informacion</a>")
             
 
             //Location Plantas: Japonesas
             L.marker([-0.1860, -78.48473],{icon: customIcon}).addTo(map)
-            .bindPopup("<b>JARDIN JAPONES</b><br><a href='https://www.ejemplo.com' target='_blank'>informacion</a>")
+            .bindPopup("<b>JARDIN JAPONES</b><br><a href='plantas7.html' target='_blank'>informacion</a>")
             
 
 
@@ -196,12 +201,12 @@
 
             //Location de arboles: Bonsais
             L.marker([-0.1864, -78.48482],{icon: customIconA}).addTo(map)
-            .bindPopup("<b>BONSAIS</b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>")
+            .bindPopup("<b>BONSAIS</b><br><a href='plantas8.html' target='_blank'>info</a>")
             
 
             //Location de arboles: Harbustos de Paramo
             L.marker([ -0.1863, -78.48608],{icon: customIconA}).addTo(map)
-            .bindPopup("<b>HARBUSTOS DE PARAMO </b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>")
+            .bindPopup("<b>ARBUSTOS DE PARAMO </b><br><a href='planta4.html' target='_blank'>info</a>")
             
 
 
@@ -219,7 +224,7 @@
 
             //Location de arboles: Cactus
             L.marker([-0.1866, -78.48593],{icon: customIconC}).addTo(map)
-            .bindPopup("<b>CACTUS</b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>")
+            .bindPopup("<b>CACTUS</b><br><a href='plantas5.html' target='_blank'>info</a>")
             
 
 
@@ -234,7 +239,7 @@
 
             //Location plnatas andinas: Naranjilla , Aji
             L.marker([-0.1858, -78.48603],{icon: customIconAD}).addTo(map)
-            .bindPopup("<b>PLANTAS ANDINAS</b><br><a href='https://www.ejemplo.com' target='_blank'>info</a>");
+            .bindPopup("<b>PLANTAS ANDINAS</b><br><a href='plantas2.html' target='_blank'>info</a>");
 
 
 

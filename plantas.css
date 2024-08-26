@@ -3,10 +3,80 @@ body{
     padding: 0;
 }
 
-header{
+header {
     display: flex;
+    justify-content: space-between; /* Distribuye espacio entre el logo y el menú */
+    align-items: center;
     background-color: black;
     margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinea los elementos del menú a la izquierda */
+    flex-grow: 1; /* Permite que el menú ocupe todo el espacio disponible */
+    margin-left: 250px; /* Ajusta este valor para mover las letras más a la izquierda */
+}
+
+.logo {
+    font-size: 24px;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea el logo a la derecha */
+    margin-right: 860px; /* Ajusta este valor para alejar el logo del borde derecho */
+}
+
+.logo img {
+    width: 150px;
+    height: auto;
+}
+
+.menu .navbar ul {
+    list-style: none; /* Elimina los puntos de la lista */
+    display: flex; /* Asegura que los elementos estén en línea */
+    padding: 0;
+    margin: 0;
+}
+
+.menu .navbar ul li {
+    margin: 0 15px; /* Añade espacio entre los elementos de la lista */
+}
+
+.menu .navbar ul li a {
+    font-size: 20px;
+    padding: 20px;
+    color: #FFFFFF;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+.menu .navbar ul li a:hover {
+    color: #13975E;
+    text-decoration: underline;
+}
+
+#menu {
+    display: none;
+}
+
+.menu-icono {
+    width: 25px;
+}
+
+.menu label {
+    cursor: pointer;
+    display: none;
 }
 
 header img{
@@ -133,4 +203,3 @@ footer img{
     border-radius: 20px;
     font-size: 25px;
 }
-  
