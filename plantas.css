@@ -1,6 +1,11 @@
 body{
     margin: 0;
     padding: 0;
+    background-image: url("https://www.quitoinforma.gob.ec/wp-content/uploads/2020/12/WhatsApp-Image-2020-12-15-at-11.06.26-800x445.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+   
+   
 }
 
 header {
