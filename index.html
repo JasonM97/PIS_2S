@@ -124,16 +124,16 @@
     <footer>
         <div class="footer-bg" id="visitanos">
             <h2>Visitanos</h2>
-            <form>
+            <form id="contact-form">
                 <div class="campo-1">
-                    <input class="campo" type="text" placeholder="Nombre">
-                    <input class="campo" type="number" placeholder="Telefono">
+                    <input class="campo" id="nombre" type="text" placeholder="Nombre">
+                    <input class="campo" id="telefono" type="number" placeholder="Telefono">
                 </div>
                 <div class="campo-1">
-                    <input class="campo" type="text" placeholder="Direccion">
-                    <input class="campo" type="email" placeholder="Correo">
+                    <input class="campo" id="direccion" type="text" placeholder="Direccion">
+                    <input class="campo" id="email" type="email" placeholder="Correo">
                 </div>
-                <textarea class="campo" cols="30" rows="10" placeholder="Texto"></textarea>
+                <textarea class="campo" id="message" cols="30" rows="10" placeholder="Texto"></textarea>
                 <input type="submit" class="btn-1" value="Enviar">
             </form>
         </div>
@@ -141,6 +141,8 @@
             <p>© 2024 Jardín Botánico de Quito. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script src="main.js"></script>
 
 </body>
 </html>
